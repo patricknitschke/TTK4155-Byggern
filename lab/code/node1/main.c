@@ -13,13 +13,12 @@ int main(void){
 	
 	USART_Init(MYUBRR);
 	memory_map_init();
-	volatile char *ext_ram = (char *) 0x1400;
+	CHANNEL xpos = CH1;
+	CHANNEL ypos = CH2;
+
 
 	while(1){
-	//SRAM_test();
-	//ext_ram[0] = 4;
-	printf('%02X', get_adc());
-
+		printf("%02X     %02X\n",memory_map_read_adc(xpos),memory_map_read_adc(ypos));
 	}
 	return 0; 
 }

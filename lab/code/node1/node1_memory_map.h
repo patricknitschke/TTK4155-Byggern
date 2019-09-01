@@ -12,6 +12,12 @@
 #ifndef NODE1_MEMORY_MAP_H_
 #define NODE1_MEMORY_MAP_H_
 
+typedef enum CHANNEL{
+	CH1 = 0b0100,
+	CH2 = 0b0101,
+	CH3 = 0b0110,
+	CH4 = 0b0111
+}CHANNEL;
 
 void memory_map_init();
 
@@ -25,8 +31,7 @@ uint8_t memory_map_read_sram(uint16_t address);
 
 uint8_t memory_map_read_sram(uint16_t address);
 
-//void memory_map_read_adc(uint16_t address)
+uint8_t memory_map_read_adc(CHANNEL c);
 
-uint8_t get_adc();
 
 #endif /* NODE1_MEMORY_MAP_H_ */

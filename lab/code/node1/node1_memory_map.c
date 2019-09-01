@@ -28,11 +28,9 @@ uint8_t memory_map_read_sram(uint16_t address){
 	return memory[0x1800 + address];
 }
 
-uint8_t get_adc(){
-	memory[0x1400] = 0b0100;
+
+uint8_t memory_map_read_adc(CHANNEL c){
+	memory[0x1400] = c;
 	_delay_ms(1);
 	return memory[0x1400];
 }
-
-
-//uint8_t memory_map_read_adc(uint16_t address){}
