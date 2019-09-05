@@ -8,17 +8,25 @@
 #include "node1_memory_map.h"
 #include <util/delay.h>
 #include "node1_SRAM_test.h"
+#include "node1_joystick.h"
 
 int main(void){
-	
 	USART_Init(MYUBRR);
 	memory_map_init();
-	CHANNEL xpos = CH1;
-	CHANNEL ypos = CH2;
+	
+	joystick_direction x_direction;
+	joystick_direction y_direction;
+	joystick_position joystick;
 
 
 	while(1){
-		printf("%02X     %02X\n",memory_map_read_adc(xpos),memory_map_read_adc(ypos));
+		return_joystick_direction(& x_direction, & y_direction);
+		/*if(x_direction = NEUTRAL){
+			printf("true");
+		}*/
+		printf("%d   %d\n", x_direction, y_direction);
+
+
 	}
 	return 0; 
 }
