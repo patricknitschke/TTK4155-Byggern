@@ -14,19 +14,13 @@ int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	
-	joystick_direction x_direction;
-	joystick_direction y_direction;
 	joystick_position joystick;
 
 
 	while(1){
-		return_joystick_direction(& x_direction, & y_direction);
-		/*if(x_direction = NEUTRAL){
-			printf("true");
-		}*/
-		printf("%d   %d\n", x_direction, y_direction);
-
-
+		return_joystick_position(&joystick);
+		//printf("%d    %d\n", x_direction, y_direction);
+		printf("%02X   %02X\n", joystick.x_analog, joystick.y_analog);
 	}
 	return 0; 
 }

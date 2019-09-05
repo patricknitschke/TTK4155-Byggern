@@ -8,23 +8,23 @@ void return_joystick_direction(joystick_direction *x_direction, joystick_directi
     uint8_t x = memory_map_read_adc(x_value);
     uint8_t y = memory_map_read_adc(y_value);
 
-    if(0x70 < x < 0x7A){
+    if(0x60 < x < 0x85){
         *x_direction = NEUTRAL;
     }
-    if(x < 0x6E){
+    if(x < 0x5F){
         *x_direction = LEFT;
     }
-    if(x > 0x7B){
+    if(x > 0x86){
         *x_direction = RIGHT;
     }
         
-    if(0x70 < y < 0x7A){
+    if(0x60 < y < 0x85){
         *y_direction = NEUTRAL;
     }
-    if(y < 0x6E){
+    if(y < 0x5F){
         *y_direction = DOWN;
     }
-    if(y > 0x7B){
+    if(y > 0x86){
         *y_direction = UP;
     }
 }
@@ -36,7 +36,7 @@ void return_joystick_position(joystick_position * joystick){
     uint8_t x = memory_map_read_adc(x_value);
     uint8_t y = memory_map_read_adc(y_value);
 
-    joystick->x = (x/5)*100;
-    joystick->y = (y/5)*100;
+    joystick->x_analog = (x/5)*100;
+    joystick->y_analog = (y/5)*100;
 }
 

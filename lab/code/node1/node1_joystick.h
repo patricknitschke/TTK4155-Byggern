@@ -8,8 +8,8 @@ typedef enum joystick_direction{
 }joystick_direction;
 
 typedef struct joystick_position{
-    uint8_t x;
-    uint8_t y;
+    uint8_t x_analog;
+    uint8_t y_analog;
 }joystick_position;
 
 void return_joystick_direction(joystick_direction *x_direction, joystick_direction *y_direction);
