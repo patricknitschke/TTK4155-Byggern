@@ -15,13 +15,11 @@ int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	
-	joystick_position joystick;
-
+	volatile JOYSTICK joystick;
 
 	while(1){
-		return_joystick_position(&joystick);
-		//printf("%d    %d\n", x_direction, y_direction);
-		printf("%02X   %02X\n", joystick.x_analog, joystick.y_analog);
+		get_joystick_values(&joystick);
+		printf("%d    %d   %d   %d\n", joystick.x_direction, joystick.y_direction, joystick.x_analog, joystick.y_analog );	
 	}
 	return 0; 
 }
