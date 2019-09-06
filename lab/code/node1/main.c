@@ -9,6 +9,7 @@
 #include <util/delay.h>
 #include "node1_SRAM_test.h"
 #include "node1_joystick.h"
+//#include "node1_slider.h"
 
 int main(void){
 	USART_Init(MYUBRR);
