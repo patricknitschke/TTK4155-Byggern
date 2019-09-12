@@ -9,17 +9,17 @@
 #include <util/delay.h>
 #include "node1_SRAM_test.h"
 #include "node1_joystick.h"
-//#include "node1_slider.h"
+#include "node1_slider.h"
 #include "node1_oled.h"
 
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
+	oled_init();
 	while(1){
-		
-	
+
+		oled_reset();
 
 	}
 	return 0; 
 }
-

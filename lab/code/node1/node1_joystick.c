@@ -3,8 +3,8 @@
 
 
 void get_joystick_values(JOYSTICK *joystick){
-    CHANNEL x_value = CH1;
-    CHANNEL y_value = CH2;
+    CHANNEL x_value = CH2;
+    CHANNEL y_value = CH1;
 
     uint8_t x = memory_map_read_adc(x_value);
     uint8_t y = memory_map_read_adc(y_value);
