@@ -36,29 +36,31 @@ void oled_init(){
     oled_write_comand(0xaf);//display on
 }
 
-void oled_set_addressing_mode(ADDR_MODE mode) {
+void oled_set_addressing_mode(ADDR_MODE mode){
     oled_write_comand(0x20);
     oled_write_comand(mode);
 }
  
-void oled_set_entire_display_on( {
+void oled_set_entire_display_on(){
     oled_write_comand(0xa5);
 }
 
-void oled_set_sleep_mode() {
+void oled_set_sleep_mode(){
     oled_write_comand(0xae);
 }
 
-void oled_set_normal_mode() {
+void oled_set_normal_mode(){
     oled_write_comand(0xaf);
 }
 
-void goto_line(uint8_t line) {
+void goto_line(uint8_t line){
     oled_set_addressing_mode(page_addr);
-    oled_write_comand(0xB0 + line);
+    oled_write_comand(0xB0+line);
 }
 
+
 void oled_reset(){
+    oled_write_comand(0x00);
     for(int i = 0; i < 8; i++) {
         goto_line(i);
         for(int j = 0; j < 128; j++){
