@@ -16,10 +16,10 @@ int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	oled_init();
+	
 	while(1){
-
-		oled_reset();
-
+	
+	
 	}
 	return 0; 
 }
