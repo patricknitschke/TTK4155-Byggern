@@ -16,9 +16,14 @@ int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	oled_init();
+	oled_goto_pos(7, 100);
 	
+	oled_write_char('c');
+
+
 	while(1){
-	
+		
+		
 	
 	}
 	return 0; 

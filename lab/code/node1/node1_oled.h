@@ -23,9 +23,11 @@ void oled_print(uint8_t data);
 
 
 //these functions works
-void oled_set_entire_display_on();//turn all the pixels in the oled 
+void oled_set_entire_display_on();//Output ignores RAM content. Sets entire display on
 
-void oled_set_sleep_mode();
+void oled_set_entire_display_of(); //Resume RAM content display
+
+void oled_set_sleep_mode(); 
 
 void oled_set_normal_mode();
 
@@ -33,7 +35,7 @@ void oled_init(); //initializes the oled
 
 void oled_write_data(uint8_t data);//writes data
 
-void oled_write_comand(uint8_t data);//writes command
+void oled_write_command(uint8_t data);//writes command
 
 void oled_set_brightness(uint8_t data);//sets the brightness of the oled
 
@@ -44,6 +46,9 @@ void oled_goto_line(uint8_t line);//does to the line we want to go to
 void oled_goto_column(uint8_t column);
 
 void oled_goto_pos(uint8_t line, uint8_t column);//bring the oled to the line and column pointet to 
+
+void oled_write_char(char c);
+
 
 void oled_goto_home(); //brings the pointer to line 0 and column 0
 #endif /* NODE1_OLED_H_ */
