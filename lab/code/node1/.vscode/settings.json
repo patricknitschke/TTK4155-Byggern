@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "node1_oled.h": "c"
+        "node1_oled.h": "c",
+        "node1_sram_test.h": "c",
+        "node1_joystick.h": "c"
     }
 }

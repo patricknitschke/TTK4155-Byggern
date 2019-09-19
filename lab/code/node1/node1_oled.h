@@ -12,7 +12,6 @@ typedef enum ADDR_MODE {
 
 
 
-
 void oled_clear(); //resets the oled, clears the sram
 
 void oled_clear_line( uint8_t line);//clear the4 line were pointing to 
@@ -49,6 +48,9 @@ void oled_goto_pos(uint8_t line, uint8_t column);//bring the oled to the line an
 
 void oled_write_char(char c);
 
+void oled_write_word(char* word);
+
 
 void oled_goto_home(); //brings the pointer to line 0 and column 0
+
 #endif /* NODE1_OLED_H_ */

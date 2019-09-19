@@ -11,20 +11,17 @@
 #include "node1_joystick.h"
 #include "node1_slider.h"
 #include "node1_oled.h"
+#include "menu.h"
 
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	oled_init();
-	oled_goto_pos(7, 100);
-	
-	oled_write_char('c');
-
-
+	//menu_test_joystick();
+	JOYSTICK testy;
 	while(1){
-		
-		
-	
+		get_joystick_values(&testy);
+		printf("y_dir: %d\n", testy.y_analog);
 	}
 	return 0; 
 }

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "node1_USART.h"
 
+#ifndef NODE1_SRAM_test_H_
+#define NODE1_SRAM_test_H_
+
 
 void SRAM_test(void)
 {
@@ -45,3 +48,6 @@ void SRAM_test(void)
 	}
 	printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase\n\n", write_errors, retrieval_errors);
 }
+
+
+#endif

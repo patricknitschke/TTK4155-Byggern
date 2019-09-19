@@ -42,7 +42,7 @@ void oled_init(){
     oled_goto_home();
 }
 
-//these functioons are navigating functions
+//these functions are navigating functions
 void oled_goto_line(uint8_t line){
     oled_write_command(0xB0 | line);
 }
@@ -111,11 +111,19 @@ void oled_set_addressing_mode(ADDR_MODE mode){
 
 void oled_write_char(char c){
     for (int i = 0; i < 4; ++i){
-        printf("test");
         oled_write_data(pgm_read_byte(&font4[c-' '][i]));
     }
 }
  
+
+void oled_write_word(char* word){
+    int i = 0;
+    while(word[i] != '\0'){
+        oled_write_char(word[i]);
+        i++;
+    }
+}
+
 
 /*
 void oled_write_data(char data);

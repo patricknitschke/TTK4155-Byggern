@@ -1,6 +1,8 @@
 
 #include "node1_memory_map.h"
 
+#ifndef NODE1_JOYSTICK_H_
+#define NODE1_JOYSTICK_H_
 
 //Vil legge inn enumen inne i structen så jeg bare kan legge inn en variable av type struct inne i funksjonen
 //vil så sammen funksjonene til en stor funksjon
@@ -17,3 +19,5 @@ typedef struct JOYSTICK{
 
 
 void get_joystick_values(JOYSTICK *joystick);
+
+#endif
