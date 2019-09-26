@@ -12,16 +12,13 @@
 #include "node1_slider.h"
 #include "node1_oled.h"
 #include "menu.h"
+#include "node1_mcp.h"
 
 int main(void){
 	USART_Init(MYUBRR);
 	memory_map_init();
 	oled_init();
-	//menu_test_joystick();
-	JOYSTICK testy;
 	while(1){
-		get_joystick_values(&testy);
-		printf("y_dir: %d\n", testy.y_analog);
 	}
 	
 	return 0; 
