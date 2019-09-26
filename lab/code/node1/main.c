@@ -23,5 +23,6 @@ int main(void){
 		get_joystick_values(&testy);
 		printf("y_dir: %d\n", testy.y_analog);
 	}
+	
 	return 0; 
 }
