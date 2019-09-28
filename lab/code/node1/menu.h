@@ -1,7 +1,6 @@
 #include "node1_USART.h"
 #include "node1_memory_map.h"
 #include <util/delay.h>
-#include "node1_SRAM_test.h"
 #include "node1_joystick.h"
 #include "node1_slider.h"
 #include "node1_oled.h"
@@ -9,14 +8,30 @@
 #ifndef MENU_H_
 #define MENU_H_
 
+typedef struct menu_node_t {
+    char* name;
+    struct menu_node_t* parent;
+    struct menu_node_t* head;
+    struct menu_node_t* tail;
+    struct menu_node_t* nxt;
+    struct menu_node_t* prv;
+    int (*action)();
+} menu_node_t;
+
+void oled_print_arrow(uint8_t row, uint8_t col);
+
+void create_linked_list();
+
+void print_loading_screen();
+
+void print_settings();
+
+void print_menu();
+
+void menu_node_init(menu_node_t* node, char* name, menu_node_t* parent, menu_node_t* first_child, void* action);
 
 void menu_init();
 
-void menu_print();
+void menu_get_position(int *position, JOYSTICK* joystick);
 
-void menu_run(int* position);
-
-void menu_get_position(int *position, JOYSTICK* menu_joystick);
-
-void menu_test_joystick();
 #endif

@@ -39,7 +39,7 @@ void mcp_write(uint8_t address, uint8_t data){
     spi_transmitt(MCP_WRITE);
     spi_transmitt(address);
     spi_transmitt(data);
-    mcp_cs();
+    mcp_cs(1);
 }
 
 //RTS command can be used to initiated message transmission for one or more of the transmitt buffers
