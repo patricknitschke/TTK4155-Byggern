@@ -8,6 +8,7 @@
 #include "menu.h"
 
 static menu_node_t* node_home;
+static menu_node_t* node_exit;
 static menu_node_t* node_play_game;
 static menu_node_t* node_highscores;
 static menu_node_t* node_settings;
@@ -25,8 +26,26 @@ void oled_print_arrow(uint8_t row, uint8_t col){
     oled_write_data(0b00011000);
 }
 
+void oled_clear_arrow(uint8_t row, uint8_t col){
+    oled_goto_pos(row, col);
+    for (int i = 0; i < 10; ++i){
+        oled_write_data(0x00);
+    }
+}
+
+void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t* parent, menu_node_t* first_child, menu_node_t* head, menu_node_t* tail, void* action){
+    node->name = name;
+    node->num_siblings = num_siblings;
+    node->parent = parent;   
+    node->first_child = first_child;
+    node->head = head;
+    node->tail = tail;
+    node->action = action;
+}
+
 void create_linked_list(){
     node_home = (menu_node_t*) malloc(sizeof(menu_node_t));
+    node_exit = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_play_game = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_highscores = (menu_node_t*) malloc(sizeof(menu_node_t));
     node_settings = (menu_node_t*) malloc(sizeof(menu_node_t));
@@ -34,14 +53,20 @@ void create_linked_list(){
     node_calibrate_joystick = (menu_node_t*) malloc(sizeof(menu_node_t));
     current_node = (menu_node_t*) malloc(sizeof(menu_node_t));
 
-    menu_node_init(node_home, "Home", NULL, node_play_game, &print_menu);
-    menu_node_init(node_play_game, "1. Play Game", node_home, NULL, NULL);
-    menu_node_init(node_highscores, "2. Highscores", node_home, NULL, NULL);
-    menu_node_init(node_settings, "3. Settings", node_home, node_calibrate_joystick, &print_settings);
-    menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", node_settings, NULL, NULL);   
-    menu_node_init(node_set_brightness, "2. Set brightness", node_settings, NULL, NULL);
+    menu_node_init(node_home, "1. Enter Main Menu", 2, NULL, node_play_game, node_home, node_exit, &print_menu);
+    menu_node_init(node_exit, "2. Exit", 2, NULL, NULL, node_home, node_exit, NULL);
+    menu_node_init(node_play_game, "1. Play Game", 3, node_home, NULL, node_play_game, node_settings, NULL);
+    menu_node_init(node_highscores, "2. Highscores", 3, node_home, NULL, node_play_game, node_settings, NULL);
+    menu_node_init(node_settings, "3. Settings", 3, node_home, node_calibrate_joystick, node_play_game, node_settings, &print_menu);
+    menu_node_init(node_calibrate_joystick, "1. Calibrate Joystick", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);   
+    menu_node_init(node_set_brightness, "2. Set brightness", 2, node_settings, NULL, node_calibrate_joystick, node_set_brightness, NULL);
 
     //Create linked lists
+    node_home->nxt = node_exit;
+    node_home->prv = NULL;
+    node_exit->nxt = NULL;
+    node_exit->prv = node_home;
+
     node_play_game->nxt = node_highscores;
     node_play_game->prv = NULL;
     node_highscores->nxt = node_settings;
@@ -53,11 +78,7 @@ void create_linked_list(){
     node_calibrate_joystick->prv = NULL;
     node_set_brightness->nxt = NULL;
     node_set_brightness->prv = node_calibrate_joystick;
-    
-    node_home->head = node_play_game;
-    node_home->tail = node_settings;
-    node_settings->head = node_calibrate_joystick;
-    node_settings->tail = node_set_brightness;
+
 }
 
 void print_loading_screen() {
@@ -93,48 +114,86 @@ void print_loading_screen() {
 
     oled_clear();
 }
-void print_settings(){
-    oled_clear();
-    oled_goto_pos(0,0);
-    menu_node_t* current_node = node_settings->head;
-    int line = 0;
-    oled_write_word(node_home->name);
 
-    while (current_node != current_node->tail) {
-        oled_goto_pos(line,0);
-        oled_write_word(current_node->name);
-        current_node = current_node->nxt;
-        line++;
-    }
-}
-void print_menu() {
+void print_menu(menu_node_t* node) {
     oled_clear();
-    oled_goto_pos(0,0);
-    menu_node_t* current_node = node_home->head;
+    menu_node_t* curr_node = node->head;
     int line = 0;
-    while (current_node != current_node->tail) {
-        oled_goto_pos(line,0);
-        oled_write_word(current_node->name);
-        current_node = current_node->nxt;
+    while (curr_node != node->tail) {
+        oled_goto_pos(line,10);
+        oled_write_word(curr_node->name);
+        curr_node = curr_node->nxt;
         line++;
     }
+    oled_goto_pos(line,10);
+    oled_write_word(node->tail->name);
 }
-void menu_node_init(menu_node_t* node, char* name, menu_node_t* parent, menu_node_t* head, void* action){
-    node->name = name;
-    node->parent = parent;
-    node->head = head;
-    node->action = action;
-}
+
 
 void menu_init(){
     create_linked_list();
     //printf("%s\n", node_set_brightness->parent->name);
-    volatile int joystick_pos = 1;
-    volatile int* position = &joystick_pos;
+    volatile int joystick_pos = 0;
     JOYSTICK menu_joystick;
-    print_menu();
+    current_node = node_home;
+    int linked_list_len = current_node->num_siblings;
+    print_menu(current_node);
+    while(1){
+        get_joystick_values(&menu_joystick);
+        if (menu_joystick.y_direction == UP) {
+            if (joystick_pos == 0){
+                joystick_pos = linked_list_len-1;
+                current_node = current_node->tail;
+            } else {
+                (joystick_pos)--;
+                current_node = current_node->prv;
+            }
+        }
+        if (menu_joystick.y_direction == DOWN) {
+            if (joystick_pos == linked_list_len-1){
+                joystick_pos = 0;
+                current_node = current_node->head;
+            } else {
+                (joystick_pos)++;
+                current_node = current_node->nxt;
+            }
+        }
+        if ((menu_joystick.x_direction == RIGHT) && (current_node->first_child != NULL)){
+            (*current_node->action)(current_node->first_child);
+            current_node = current_node->first_child;
+            joystick_pos = 0;
+        }
+        if ((menu_joystick.x_direction == LEFT) && (current_node->parent != NULL)){
+            current_node = current_node->parent;
+            (*current_node->action)(current_node);
+            joystick_pos = 0;
+        }
+        linked_list_len = current_node->num_siblings;
+        joystick_pos = abs(joystick_pos % linked_list_len);
+
+        printf("pos %d\t", joystick_pos);
+        printf("node is at %s\n", current_node->name);
+
+        oled_print_arrow(joystick_pos,0);
+
+        uint8_t neutral = 50;
+        int diff = abs(((int)neutral - (int)menu_joystick.y_analog)/5);
+        int delay_time = (1000/(diff+1));
+        printf("speed: %d\n", delay_time);
+        if (diff > 1) {
+            for (int i = 0; i < delay_time; i++) {
+                _delay_ms(1);
+            }
+        } else  {
+            _delay_ms(200);
+        }
+        oled_clear_arrow(joystick_pos,0);
+    }
     _delay_ms(3000);
     print_settings();
+}
+
+void menu_loop(){
 
 }
 

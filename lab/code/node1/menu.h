@@ -11,11 +11,13 @@
 typedef struct menu_node_t {
     char* name;
     struct menu_node_t* parent;
+    struct menu_node_t* first_child;
     struct menu_node_t* head;
     struct menu_node_t* tail;
     struct menu_node_t* nxt;
     struct menu_node_t* prv;
-    int (*action)();
+    int num_siblings; //including the node itself == length of linked list
+    void (*action)();
 } menu_node_t;
 
 void oled_print_arrow(uint8_t row, uint8_t col);
@@ -28,7 +30,7 @@ void print_settings();
 
 void print_menu();
 
-void menu_node_init(menu_node_t* node, char* name, menu_node_t* parent, menu_node_t* first_child, void* action);
+void menu_node_init(menu_node_t* node, char* name, int num_siblings, menu_node_t* parent,menu_node_t* first_child, menu_node_t* head, menu_node_t* tail, void* action);
 
 void menu_init();
 
